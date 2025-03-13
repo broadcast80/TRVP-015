@@ -1,0 +1,32 @@
+-- Создание базы данных
+CREATE DATABASE IF NOT EXISTS polyclinic;
+USE polyclinic;
+
+CREATE TABLE IF NOT EXISTS Shifts (
+    shift_id INT AUTO_INCREMENT PRIMARY KEY,  
+    complexity_limit INT NOT NULL,
+    shift_date DATE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS procedures (
+    procedure_id INT AUTO_INCREMENT PRIMARY KEY,  
+    procedure_name VARCHAR(255) NOT NULL,
+    procedure_complexity INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS shift_procedures (
+    shift_id INT,
+    procedure_id INT,
+    PRIMARY KEY (shift_id, procedure_id),      
+    FOREIGN KEY (shift_id) REFERENCES Shifts(shift_id) ON DELETE CASCADE,
+    FOREIGN KEY (procedure_id) REFERENCES procedures(procedure_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS shift_appointments (
+    appointment_id INT AUTO_INCREMENT PRIMARY KEY,
+    shift_id INT,
+    procedure_id INT,
+    patient_name VARCHAR(255),
+    FOREIGN KEY (shift_id) REFERENCES Shifts(shift_id) ON DELETE CASCADE,
+    FOREIGN KEY (procedure_id) REFERENCES procedures(procedure_id) ON DELETE CASCADE
+);
